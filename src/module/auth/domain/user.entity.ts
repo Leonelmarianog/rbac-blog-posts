@@ -6,7 +6,7 @@ export class User extends BaseEntity {
 
   externalId: string;
 
-  role: Role;
-
   isAdmin = false;
+
+  role: Role;
 }

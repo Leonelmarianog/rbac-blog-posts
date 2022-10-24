@@ -1,6 +1,6 @@
+import { RoleName } from '../../../domain/role-name.enum';
 import { Role } from '../../../domain/role.entity';
 import { User } from '../../../domain/user.entity';
-import { RoleEntity } from '../entity/role.entity';
 import { UserEntity } from '../entity/user.entity';
 
 export class RepositoryMapper {
@@ -11,25 +11,29 @@ export class RepositoryMapper {
     user.username = userEntity.username;
     user.externalId = userEntity.externalId;
     user.isAdmin = userEntity.isAdmin;
+    user.role = this.createRole(userEntity.role);
     user.createdAt = userEntity.createdAt;
     user.updatedAt = userEntity.updatedAt;
     user.deletedAt = userEntity.deletedAt;
 
-    if (userEntity.role) {
-      user.role = this.fromRoleEntityToRole(userEntity.role);
-    }
-
     return user;
   }
 
-  fromRoleEntityToRole(roleEntity: RoleEntity): Role {
+  fromUserToUserEntity(user: User): UserEntity {
+    const userEntity = new UserEntity();
+
+    userEntity.username = user.username;
+    userEntity.externalId = user.externalId;
+    userEntity.isAdmin = user.isAdmin;
+    userEntity.role = user.role.name;
+
+    return userEntity;
+  }
+
+  createRole(roleName: RoleName): Role {
     const role = new Role();
 
-    role.id = roleEntity.id;
-    role.name = roleEntity.name;
-    role.createdAt = roleEntity.createdAt;
-    role.updatedAt = roleEntity.updatedAt;
-    role.deletedAt = roleEntity.deletedAt;
+    role.name = roleName;
 
     return role;
   }

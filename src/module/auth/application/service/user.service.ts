@@ -21,6 +21,10 @@ export class UserService implements IUserService {
     return user;
   }
 
+  async getOneByExternalId(externalId: string): Promise<User> {
+    return this.userRepository.getOneByExternalId(externalId);
+  }
+
   async create(user: User): Promise<User> {
     return this.userRepository.create(user);
   }

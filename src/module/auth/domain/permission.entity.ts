@@ -1,8 +1,7 @@
-import { BaseEntity } from '../../../common/domain/base.entity';
 import { AuthAction } from './auth-actions.enum';
 
-export class Permission extends BaseEntity {
+export class Permission {
   action: AuthAction;
 
-  subjectId: number;
+  subjectId: string;
 }

@@ -5,5 +5,7 @@ export interface IUserService {
 
   getOneById(id: number): Promise<User>;
 
+  getOneByExternalId(externalId: string): Promise<User>;
+
   create(user: User): Promise<User>;
 }

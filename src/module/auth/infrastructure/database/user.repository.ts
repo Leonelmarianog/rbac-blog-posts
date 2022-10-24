@@ -14,14 +14,26 @@ export class UserRepository implements IUserRepository {
   }
 
   async getAll(): Promise<User[]> {
-    const userEntities = await this.repository.find({ relations: { role: true } });
+    const userEntities = await this.repository.find();
     return userEntities.map((userEntity) => this.repositoryMapper.fromUserEntityToUser(userEntity));
   }
 
   async getOneById(id: number): Promise<User> {
-    const userEntity = await this.repository.findOne({ where: { id }, relations: { role: true } });
+    const userEntity = await this.repository.findOne({ where: { id } });
 
-    if (userEntity) {
+    if (!userEntity) {
+      return null;
+    }
+
+    return this.repositoryMapper.fromUserEntityToUser(userEntity);
+  }
+
+  async getOneByExternalId(externalId: string): Promise<User> {
+    const userEntity = await this.repository.findOne({
+      where: { externalId },
+    });
+
+    if (!userEntity) {
       return null;
     }
 
@@ -29,6 +41,7 @@ export class UserRepository implements IUserRepository {
   }
 
   async create(user: User): Promise<User> {
-    return this.repository.save({});
+    const userEntity = await this.repository.save(this.repositoryMapper.fromUserToUserEntity(user));
+    return this.repositoryMapper.fromUserEntityToUser(userEntity);
   }
 }
